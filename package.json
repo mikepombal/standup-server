@@ -4,13 +4,18 @@
     "description": "",
     "main": "build/src/index.js",
     "types": "build/src/index.d.ts",
+    "engines": {
+        "node": "12.8.0",
+        "npm": "6.10.2"
+    },
     "files": [
         "build/src"
     ],
     "license": "Apache-2.0",
     "keywords": [],
     "scripts": {
-        "start": "ts-node-dev --no-notify --respawn --transpileOnly ./src",
+        "start": "node build/src/index.js",
+        "local": "ts-node ./src/index.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
         "check": "gts check",
         "clean": "gts clean",
@@ -22,7 +27,9 @@
     },
     "devDependencies": {
         "@types/node": "^10.0.3",
+        "@types/ws": "^6.0.2",
         "gts": "^1.1.0",
+        "ts-node": "^8.3.0",
         "ts-node-dev": "^1.0.0-pre.40",
         "typescript": "~3.5.0"
     },

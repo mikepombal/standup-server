@@ -1,3 +1,3 @@
 export const Query = {
-    info: () => 'Standup Server',
+    info: () => 'Standup Server!!!',
 };
