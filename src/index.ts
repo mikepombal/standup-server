@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ silent: process.env.NODE_ENV === 'production' });
 
 import { GraphQLServer } from 'graphql-yoga';
 import * as resolvers from './resolvers';
