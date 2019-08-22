@@ -5,6 +5,8 @@ endpoint: https://standup-data-6db503664d.herokuapp.com/standup-data/dev
 # Points to the file that contains your datamodel
 datamodel: datamodel.prisma
 
+secret: ${env:PRISMA_STANDUP_SECRET}
+
 # Specifies language & location for the generated Prisma client
 generate:
     - generator: typescript-client

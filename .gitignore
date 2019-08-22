@@ -1,6 +1,9 @@
 # dependencies
 /node_modules
 
+# dotenv file
+.env
+
 # generated files
 /src/generated/tmp-resolvers/*
 
