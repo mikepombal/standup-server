@@ -47,6 +47,13 @@ type Query {
   node(id: ID!): Node
 }
 
+enum Role {
+  SUPERADMIN
+  ADMIN
+  BASIC
+  NONE
+}
+
 type Subscription {
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
@@ -56,6 +63,7 @@ type User {
   createdAt: DateTime!
   firstname: String!
   surname: String!
+  role: Role!
 }
 
 type UserConnection {
@@ -68,6 +76,7 @@ input UserCreateInput {
   username: ID
   firstname: String!
   surname: String!
+  role: Role
 }
 
 type UserEdge {
@@ -84,6 +93,8 @@ enum UserOrderByInput {
   firstname_DESC
   surname_ASC
   surname_DESC
+  role_ASC
+  role_DESC
 }
 
 type UserPreviousValues {
@@ -91,6 +102,7 @@ type UserPreviousValues {
   createdAt: DateTime!
   firstname: String!
   surname: String!
+  role: Role!
 }
 
 type UserSubscriptionPayload {
@@ -114,11 +126,13 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   firstname: String
   surname: String
+  role: Role
 }
 
 input UserUpdateManyMutationInput {
   firstname: String
   surname: String
+  role: Role
 }
 
 input UserWhereInput {
@@ -172,6 +186,10 @@ input UserWhereInput {
   surname_not_starts_with: String
   surname_ends_with: String
   surname_not_ends_with: String
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

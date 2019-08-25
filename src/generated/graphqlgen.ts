@@ -3,6 +3,8 @@
 import { GraphQLResolveInfo } from 'graphql';
 import { User, Context } from '../types';
 
+export type Role = 'SUPERADMIN' | 'ADMIN' | 'BASIC' | 'NONE';
+
 export namespace QueryResolvers {
     export const defaultResolvers = {};
 
@@ -62,6 +64,7 @@ export namespace UserResolvers {
         username: (parent: User) => parent.username,
         firstname: (parent: User) => parent.firstname,
         surname: (parent: User) => parent.surname,
+        role: (parent: User) => parent.role,
     };
 
     export type UsernameResolver =
@@ -85,6 +88,13 @@ export namespace UserResolvers {
               resolve: (parent: User, args: {}, ctx: Context, info: GraphQLResolveInfo) => string | Promise<string>;
           };
 
+    export type RoleResolver =
+        | ((parent: User, args: {}, ctx: Context, info: GraphQLResolveInfo) => Role | Promise<Role>)
+        | {
+              fragment: string;
+              resolve: (parent: User, args: {}, ctx: Context, info: GraphQLResolveInfo) => Role | Promise<Role>;
+          };
+
     export interface Type {
         username:
             | ((parent: User, args: {}, ctx: Context, info: GraphQLResolveInfo) => string | Promise<string>)
@@ -105,6 +115,13 @@ export namespace UserResolvers {
             | {
                   fragment: string;
                   resolve: (parent: User, args: {}, ctx: Context, info: GraphQLResolveInfo) => string | Promise<string>;
+              };
+
+        role:
+            | ((parent: User, args: {}, ctx: Context, info: GraphQLResolveInfo) => Role | Promise<Role>)
+            | {
+                  fragment: string;
+                  resolve: (parent: User, args: {}, ctx: Context, info: GraphQLResolveInfo) => Role | Promise<Role>;
               };
     }
 }

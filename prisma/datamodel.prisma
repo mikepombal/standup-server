@@ -3,4 +3,12 @@ type User {
     createdAt: DateTime! @createdAt
     firstname: String!
     surname: String!
+    role: Role! @default(value: NONE)
+}
+
+enum Role {
+    SUPERADMIN
+    ADMIN
+    BASIC
+    NONE
 }

@@ -7,4 +7,12 @@ type User {
     username: ID!
     firstname: String!
     surname: String!
+    role: Role!
+}
+
+enum Role {
+    SUPERADMIN
+    ADMIN
+    BASIC
+    NONE
 }

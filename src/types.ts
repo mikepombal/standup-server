@@ -8,4 +8,5 @@ export interface User {
     username: string;
     firstname: string;
     surname: string;
+    role: 'SUPERADMIN' | 'ADMIN' | 'BASIC' | 'NONE';
 }

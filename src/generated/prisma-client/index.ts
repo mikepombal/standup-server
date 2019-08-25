@@ -101,6 +101,8 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type Role = "SUPERADMIN" | "ADMIN" | "BASIC" | "NONE";
+
 export type UserOrderByInput =
   | "username_ASC"
   | "username_DESC"
@@ -109,7 +111,9 @@ export type UserOrderByInput =
   | "firstname_ASC"
   | "firstname_DESC"
   | "surname_ASC"
-  | "surname_DESC";
+  | "surname_DESC"
+  | "role_ASC"
+  | "role_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -168,6 +172,10 @@ export interface UserWhereInput {
   surname_not_starts_with?: Maybe<String>;
   surname_ends_with?: Maybe<String>;
   surname_not_ends_with?: Maybe<String>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
@@ -177,16 +185,19 @@ export interface UserCreateInput {
   username?: Maybe<ID_Input>;
   firstname: String;
   surname: String;
+  role?: Maybe<Role>;
 }
 
 export interface UserUpdateInput {
   firstname?: Maybe<String>;
   surname?: Maybe<String>;
+  role?: Maybe<Role>;
 }
 
 export interface UserUpdateManyMutationInput {
   firstname?: Maybe<String>;
   surname?: Maybe<String>;
+  role?: Maybe<Role>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -209,6 +220,7 @@ export interface User {
   createdAt: DateTimeOutput;
   firstname: String;
   surname: String;
+  role: Role;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -216,6 +228,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
+  role: () => Promise<Role>;
 }
 
 export interface UserSubscription
@@ -225,6 +238,7 @@ export interface UserSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   firstname: () => Promise<AsyncIterator<String>>;
   surname: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
 }
 
 export interface UserNullablePromise
@@ -234,6 +248,7 @@ export interface UserNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
+  role: () => Promise<Role>;
 }
 
 export interface UserConnection {
@@ -359,6 +374,7 @@ export interface UserPreviousValues {
   createdAt: DateTimeOutput;
   firstname: String;
   surname: String;
+  role: Role;
 }
 
 export interface UserPreviousValuesPromise
@@ -368,6 +384,7 @@ export interface UserPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
+  role: () => Promise<Role>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -377,6 +394,7 @@ export interface UserPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   firstname: () => Promise<AsyncIterator<String>>;
   surname: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
 }
 
 /*
@@ -419,6 +437,10 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Role",
     embedded: false
   }
 ];
