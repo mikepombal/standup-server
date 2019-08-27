@@ -11,3 +11,7 @@ secret: ${env:PRISMA_STANDUP_SECRET}
 generate:
     - generator: typescript-client
       output: ../src/generated/prisma-client
+
+hooks:
+    post-deploy:
+        - prisma generate
