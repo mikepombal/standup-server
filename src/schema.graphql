@@ -3,6 +3,10 @@ type Query {
     listUsers: [User!]!
 }
 
+type Mutation {
+    login(usrname: String!, password: String!): AuthPayload
+}
+
 type User {
     username: ID!
     firstname: String!
@@ -15,4 +19,9 @@ enum Role {
     ADMIN
     BASIC
     NONE
+}
+
+type AuthPayload {
+    token: String!
+    user: User!
 }

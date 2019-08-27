@@ -10,3 +10,7 @@ export interface User {
     surname: string;
     role: 'SUPERADMIN' | 'ADMIN' | 'BASIC' | 'NONE';
 }
+
+export interface AuthPayload {
+    token: string;
+}

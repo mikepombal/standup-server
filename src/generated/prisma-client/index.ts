@@ -112,6 +112,8 @@ export type UserOrderByInput =
   | "firstname_DESC"
   | "surname_ASC"
   | "surname_DESC"
+  | "password_ASC"
+  | "password_DESC"
   | "role_ASC"
   | "role_DESC";
 
@@ -172,6 +174,20 @@ export interface UserWhereInput {
   surname_not_starts_with?: Maybe<String>;
   surname_ends_with?: Maybe<String>;
   surname_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
   role?: Maybe<Role>;
   role_not?: Maybe<Role>;
   role_in?: Maybe<Role[] | Role>;
@@ -185,18 +201,21 @@ export interface UserCreateInput {
   username?: Maybe<ID_Input>;
   firstname: String;
   surname: String;
+  password: String;
   role?: Maybe<Role>;
 }
 
 export interface UserUpdateInput {
   firstname?: Maybe<String>;
   surname?: Maybe<String>;
+  password?: Maybe<String>;
   role?: Maybe<Role>;
 }
 
 export interface UserUpdateManyMutationInput {
   firstname?: Maybe<String>;
   surname?: Maybe<String>;
+  password?: Maybe<String>;
   role?: Maybe<Role>;
 }
 
@@ -220,6 +239,7 @@ export interface User {
   createdAt: DateTimeOutput;
   firstname: String;
   surname: String;
+  password: String;
   role: Role;
 }
 
@@ -228,6 +248,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
+  password: () => Promise<String>;
   role: () => Promise<Role>;
 }
 
@@ -238,6 +259,7 @@ export interface UserSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   firstname: () => Promise<AsyncIterator<String>>;
   surname: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<Role>>;
 }
 
@@ -248,6 +270,7 @@ export interface UserNullablePromise
   createdAt: () => Promise<DateTimeOutput>;
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
+  password: () => Promise<String>;
   role: () => Promise<Role>;
 }
 
@@ -374,6 +397,7 @@ export interface UserPreviousValues {
   createdAt: DateTimeOutput;
   firstname: String;
   surname: String;
+  password: String;
   role: Role;
 }
 
@@ -384,6 +408,7 @@ export interface UserPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
+  password: () => Promise<String>;
   role: () => Promise<Role>;
 }
 
@@ -394,6 +419,7 @@ export interface UserPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   firstname: () => Promise<AsyncIterator<String>>;
   surname: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<Role>>;
 }
 
