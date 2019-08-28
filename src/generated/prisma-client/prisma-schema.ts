@@ -63,6 +63,7 @@ type User {
   createdAt: DateTime!
   firstname: String!
   surname: String!
+  password: String!
   role: Role!
 }
 
@@ -76,6 +77,7 @@ input UserCreateInput {
   username: ID
   firstname: String!
   surname: String!
+  password: String!
   role: Role
 }
 
@@ -93,6 +95,8 @@ enum UserOrderByInput {
   firstname_DESC
   surname_ASC
   surname_DESC
+  password_ASC
+  password_DESC
   role_ASC
   role_DESC
 }
@@ -102,6 +106,7 @@ type UserPreviousValues {
   createdAt: DateTime!
   firstname: String!
   surname: String!
+  password: String!
   role: Role!
 }
 
@@ -126,12 +131,14 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   firstname: String
   surname: String
+  password: String
   role: Role
 }
 
 input UserUpdateManyMutationInput {
   firstname: String
   surname: String
+  password: String
   role: Role
 }
 
@@ -186,6 +193,20 @@ input UserWhereInput {
   surname_not_starts_with: String
   surname_ends_with: String
   surname_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
   role: Role
   role_not: Role
   role_in: [Role!]
