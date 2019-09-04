@@ -12,6 +12,12 @@ export interface User {
     role: 'SUPERADMIN' | 'ADMIN' | 'BASIC' | 'NONE';
 }
 
+export interface LastUpdate {
+    username: string;
+    firstname: string;
+    lastUpdate: string | null;
+}
+
 export interface AuthPayload {
     token: string;
     user: User;

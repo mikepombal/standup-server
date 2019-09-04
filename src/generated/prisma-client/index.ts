@@ -16,6 +16,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
+  update: (where?: UpdateWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -38,6 +39,25 @@ export interface Prisma {
    * Queries
    */
 
+  update: (where: UpdateWhereUniqueInput) => UpdateNullablePromise;
+  updates: (args?: {
+    where?: UpdateWhereInput;
+    orderBy?: UpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Update>;
+  updatesConnection: (args?: {
+    where?: UpdateWhereInput;
+    orderBy?: UpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UpdateConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserNullablePromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -63,6 +83,22 @@ export interface Prisma {
    * Mutations
    */
 
+  createUpdate: (data: UpdateCreateInput) => UpdatePromise;
+  updateUpdate: (args: {
+    data: UpdateUpdateInput;
+    where: UpdateWhereUniqueInput;
+  }) => UpdatePromise;
+  updateManyUpdates: (args: {
+    data: UpdateUpdateManyMutationInput;
+    where?: UpdateWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUpdate: (args: {
+    where: UpdateWhereUniqueInput;
+    create: UpdateCreateInput;
+    update: UpdateUpdateInput;
+  }) => UpdatePromise;
+  deleteUpdate: (where: UpdateWhereUniqueInput) => UpdatePromise;
+  deleteManyUpdates: (where?: UpdateWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -88,6 +124,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  update: (
+    where?: UpdateSubscriptionWhereInput
+  ) => UpdateSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -102,6 +141,12 @@ export interface ClientConstructor<T> {
  */
 
 export type Role = "SUPERADMIN" | "ADMIN" | "BASIC" | "NONE";
+
+export type UpdateOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "date_ASC"
+  | "date_DESC";
 
 export type UserOrderByInput =
   | "username_ASC"
@@ -119,9 +164,38 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type UserWhereUniqueInput = AtLeastOne<{
-  username: Maybe<ID_Input>;
+export type UpdateWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
 }>;
+
+export interface UpdateWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<UpdateWhereInput[] | UpdateWhereInput>;
+  OR?: Maybe<UpdateWhereInput[] | UpdateWhereInput>;
+  NOT?: Maybe<UpdateWhereInput[] | UpdateWhereInput>;
+}
 
 export interface UserWhereInput {
   username?: Maybe<ID_Input>;
@@ -192,9 +266,63 @@ export interface UserWhereInput {
   role_not?: Maybe<Role>;
   role_in?: Maybe<Role[] | Role>;
   role_not_in?: Maybe<Role[] | Role>;
+  updates_every?: Maybe<UpdateWhereInput>;
+  updates_some?: Maybe<UpdateWhereInput>;
+  updates_none?: Maybe<UpdateWhereInput>;
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  username: Maybe<ID_Input>;
+}>;
+
+export interface UpdateCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneWithoutUpdatesInput;
+  date: DateTimeInput;
+}
+
+export interface UserCreateOneWithoutUpdatesInput {
+  create?: Maybe<UserCreateWithoutUpdatesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutUpdatesInput {
+  username?: Maybe<ID_Input>;
+  firstname: String;
+  surname: String;
+  password: String;
+  role?: Maybe<Role>;
+}
+
+export interface UpdateUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutUpdatesInput>;
+  date?: Maybe<DateTimeInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutUpdatesInput {
+  create?: Maybe<UserCreateWithoutUpdatesInput>;
+  update?: Maybe<UserUpdateWithoutUpdatesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutUpdatesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutUpdatesDataInput {
+  firstname?: Maybe<String>;
+  surname?: Maybe<String>;
+  password?: Maybe<String>;
+  role?: Maybe<Role>;
+}
+
+export interface UserUpsertWithoutUpdatesInput {
+  update: UserUpdateWithoutUpdatesDataInput;
+  create: UserCreateWithoutUpdatesInput;
+}
+
+export interface UpdateUpdateManyMutationInput {
+  date?: Maybe<DateTimeInput>;
 }
 
 export interface UserCreateInput {
@@ -203,6 +331,17 @@ export interface UserCreateInput {
   surname: String;
   password: String;
   role?: Maybe<Role>;
+  updates?: Maybe<UpdateCreateManyWithoutUserInput>;
+}
+
+export interface UpdateCreateManyWithoutUserInput {
+  create?: Maybe<UpdateCreateWithoutUserInput[] | UpdateCreateWithoutUserInput>;
+  connect?: Maybe<UpdateWhereUniqueInput[] | UpdateWhereUniqueInput>;
+}
+
+export interface UpdateCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  date: DateTimeInput;
 }
 
 export interface UserUpdateInput {
@@ -210,6 +349,80 @@ export interface UserUpdateInput {
   surname?: Maybe<String>;
   password?: Maybe<String>;
   role?: Maybe<Role>;
+  updates?: Maybe<UpdateUpdateManyWithoutUserInput>;
+}
+
+export interface UpdateUpdateManyWithoutUserInput {
+  create?: Maybe<UpdateCreateWithoutUserInput[] | UpdateCreateWithoutUserInput>;
+  delete?: Maybe<UpdateWhereUniqueInput[] | UpdateWhereUniqueInput>;
+  connect?: Maybe<UpdateWhereUniqueInput[] | UpdateWhereUniqueInput>;
+  set?: Maybe<UpdateWhereUniqueInput[] | UpdateWhereUniqueInput>;
+  disconnect?: Maybe<UpdateWhereUniqueInput[] | UpdateWhereUniqueInput>;
+  update?: Maybe<
+    | UpdateUpdateWithWhereUniqueWithoutUserInput[]
+    | UpdateUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | UpdateUpsertWithWhereUniqueWithoutUserInput[]
+    | UpdateUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<UpdateScalarWhereInput[] | UpdateScalarWhereInput>;
+  updateMany?: Maybe<
+    | UpdateUpdateManyWithWhereNestedInput[]
+    | UpdateUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UpdateUpdateWithWhereUniqueWithoutUserInput {
+  where: UpdateWhereUniqueInput;
+  data: UpdateUpdateWithoutUserDataInput;
+}
+
+export interface UpdateUpdateWithoutUserDataInput {
+  date?: Maybe<DateTimeInput>;
+}
+
+export interface UpdateUpsertWithWhereUniqueWithoutUserInput {
+  where: UpdateWhereUniqueInput;
+  update: UpdateUpdateWithoutUserDataInput;
+  create: UpdateCreateWithoutUserInput;
+}
+
+export interface UpdateScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<UpdateScalarWhereInput[] | UpdateScalarWhereInput>;
+  OR?: Maybe<UpdateScalarWhereInput[] | UpdateScalarWhereInput>;
+  NOT?: Maybe<UpdateScalarWhereInput[] | UpdateScalarWhereInput>;
+}
+
+export interface UpdateUpdateManyWithWhereNestedInput {
+  where: UpdateScalarWhereInput;
+  data: UpdateUpdateManyDataInput;
+}
+
+export interface UpdateUpdateManyDataInput {
+  date?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -217,6 +430,17 @@ export interface UserUpdateManyMutationInput {
   surname?: Maybe<String>;
   password?: Maybe<String>;
   role?: Maybe<Role>;
+}
+
+export interface UpdateSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UpdateWhereInput>;
+  AND?: Maybe<UpdateSubscriptionWhereInput[] | UpdateSubscriptionWhereInput>;
+  OR?: Maybe<UpdateSubscriptionWhereInput[] | UpdateSubscriptionWhereInput>;
+  NOT?: Maybe<UpdateSubscriptionWhereInput[] | UpdateSubscriptionWhereInput>;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -232,6 +456,33 @@ export interface UserSubscriptionWhereInput {
 
 export interface NodeNode {
   id: ID_Output;
+}
+
+export interface Update {
+  id: ID_Output;
+  date: DateTimeOutput;
+}
+
+export interface UpdatePromise extends Promise<Update>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  date: () => Promise<DateTimeOutput>;
+}
+
+export interface UpdateSubscription
+  extends Promise<AsyncIterator<Update>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface UpdateNullablePromise
+  extends Promise<Update | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  date: () => Promise<DateTimeOutput>;
 }
 
 export interface User {
@@ -250,6 +501,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   surname: () => Promise<String>;
   password: () => Promise<String>;
   role: () => Promise<Role>;
+  updates: <T = FragmentableArray<Update>>(args?: {
+    where?: UpdateWhereInput;
+    orderBy?: UpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserSubscription
@@ -261,6 +521,15 @@ export interface UserSubscription
   surname: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<Role>>;
+  updates: <T = Promise<AsyncIterator<UpdateSubscription>>>(args?: {
+    where?: UpdateWhereInput;
+    orderBy?: UpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserNullablePromise
@@ -272,27 +541,36 @@ export interface UserNullablePromise
   surname: () => Promise<String>;
   password: () => Promise<String>;
   role: () => Promise<Role>;
+  updates: <T = FragmentableArray<Update>>(args?: {
+    where?: UpdateWhereInput;
+    orderBy?: UpdateOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface UserConnection {
+export interface UpdateConnection {
   pageInfo: PageInfo;
-  edges: UserEdge[];
+  edges: UpdateEdge[];
 }
 
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
+export interface UpdateConnectionPromise
+  extends Promise<UpdateConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
+  edges: <T = FragmentableArray<UpdateEdge>>() => T;
+  aggregate: <T = AggregateUpdatePromise>() => T;
 }
 
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
+export interface UpdateConnectionSubscription
+  extends Promise<AsyncIterator<UpdateConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UpdateEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUpdateSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -316,6 +594,60 @@ export interface PageInfoSubscription
   hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
   startCursor: () => Promise<AsyncIterator<String>>;
   endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UpdateEdge {
+  node: Update;
+  cursor: String;
+}
+
+export interface UpdateEdgePromise extends Promise<UpdateEdge>, Fragmentable {
+  node: <T = UpdatePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UpdateEdgeSubscription
+  extends Promise<AsyncIterator<UpdateEdge>>,
+    Fragmentable {
+  node: <T = UpdateSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUpdate {
+  count: Int;
+}
+
+export interface AggregateUpdatePromise
+  extends Promise<AggregateUpdate>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUpdateSubscription
+  extends Promise<AsyncIterator<AggregateUpdate>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface UserEdge {
@@ -365,6 +697,50 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface UpdateSubscriptionPayload {
+  mutation: MutationType;
+  node: Update;
+  updatedFields: String[];
+  previousValues: UpdatePreviousValues;
+}
+
+export interface UpdateSubscriptionPayloadPromise
+  extends Promise<UpdateSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UpdatePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UpdatePreviousValuesPromise>() => T;
+}
+
+export interface UpdateSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UpdateSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UpdateSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UpdatePreviousValuesSubscription>() => T;
+}
+
+export interface UpdatePreviousValues {
+  id: ID_Output;
+  date: DateTimeOutput;
+}
+
+export interface UpdatePreviousValuesPromise
+  extends Promise<UpdatePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  date: () => Promise<DateTimeOutput>;
+}
+
+export interface UpdatePreviousValuesSubscription
+  extends Promise<AsyncIterator<UpdatePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -463,6 +839,10 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Update",
     embedded: false
   },
   {

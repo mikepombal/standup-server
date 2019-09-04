@@ -2,7 +2,11 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateUser {
+export const typeDefs = /* GraphQL */ `type AggregateUpdate {
+  count: Int!
+}
+
+type AggregateUser {
   count: Int!
 }
 
@@ -15,6 +19,12 @@ scalar DateTime
 scalar Long
 
 type Mutation {
+  createUpdate(data: UpdateCreateInput!): Update!
+  updateUpdate(data: UpdateUpdateInput!, where: UpdateWhereUniqueInput!): Update
+  updateManyUpdates(data: UpdateUpdateManyMutationInput!, where: UpdateWhereInput): BatchPayload!
+  upsertUpdate(where: UpdateWhereUniqueInput!, create: UpdateCreateInput!, update: UpdateUpdateInput!): Update!
+  deleteUpdate(where: UpdateWhereUniqueInput!): Update
+  deleteManyUpdates(where: UpdateWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -41,6 +51,9 @@ type PageInfo {
 }
 
 type Query {
+  update(where: UpdateWhereUniqueInput!): Update
+  updates(where: UpdateWhereInput, orderBy: UpdateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Update]!
+  updatesConnection(where: UpdateWhereInput, orderBy: UpdateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UpdateConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -55,7 +68,177 @@ enum Role {
 }
 
 type Subscription {
+  update(where: UpdateSubscriptionWhereInput): UpdateSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Update {
+  id: ID!
+  user: User!
+  date: DateTime!
+}
+
+type UpdateConnection {
+  pageInfo: PageInfo!
+  edges: [UpdateEdge]!
+  aggregate: AggregateUpdate!
+}
+
+input UpdateCreateInput {
+  id: ID
+  user: UserCreateOneWithoutUpdatesInput!
+  date: DateTime!
+}
+
+input UpdateCreateManyWithoutUserInput {
+  create: [UpdateCreateWithoutUserInput!]
+  connect: [UpdateWhereUniqueInput!]
+}
+
+input UpdateCreateWithoutUserInput {
+  id: ID
+  date: DateTime!
+}
+
+type UpdateEdge {
+  node: Update!
+  cursor: String!
+}
+
+enum UpdateOrderByInput {
+  id_ASC
+  id_DESC
+  date_ASC
+  date_DESC
+}
+
+type UpdatePreviousValues {
+  id: ID!
+  date: DateTime!
+}
+
+input UpdateScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  AND: [UpdateScalarWhereInput!]
+  OR: [UpdateScalarWhereInput!]
+  NOT: [UpdateScalarWhereInput!]
+}
+
+type UpdateSubscriptionPayload {
+  mutation: MutationType!
+  node: Update
+  updatedFields: [String!]
+  previousValues: UpdatePreviousValues
+}
+
+input UpdateSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UpdateWhereInput
+  AND: [UpdateSubscriptionWhereInput!]
+  OR: [UpdateSubscriptionWhereInput!]
+  NOT: [UpdateSubscriptionWhereInput!]
+}
+
+input UpdateUpdateInput {
+  user: UserUpdateOneRequiredWithoutUpdatesInput
+  date: DateTime
+}
+
+input UpdateUpdateManyDataInput {
+  date: DateTime
+}
+
+input UpdateUpdateManyMutationInput {
+  date: DateTime
+}
+
+input UpdateUpdateManyWithoutUserInput {
+  create: [UpdateCreateWithoutUserInput!]
+  delete: [UpdateWhereUniqueInput!]
+  connect: [UpdateWhereUniqueInput!]
+  set: [UpdateWhereUniqueInput!]
+  disconnect: [UpdateWhereUniqueInput!]
+  update: [UpdateUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [UpdateUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [UpdateScalarWhereInput!]
+  updateMany: [UpdateUpdateManyWithWhereNestedInput!]
+}
+
+input UpdateUpdateManyWithWhereNestedInput {
+  where: UpdateScalarWhereInput!
+  data: UpdateUpdateManyDataInput!
+}
+
+input UpdateUpdateWithoutUserDataInput {
+  date: DateTime
+}
+
+input UpdateUpdateWithWhereUniqueWithoutUserInput {
+  where: UpdateWhereUniqueInput!
+  data: UpdateUpdateWithoutUserDataInput!
+}
+
+input UpdateUpsertWithWhereUniqueWithoutUserInput {
+  where: UpdateWhereUniqueInput!
+  update: UpdateUpdateWithoutUserDataInput!
+  create: UpdateCreateWithoutUserInput!
+}
+
+input UpdateWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  AND: [UpdateWhereInput!]
+  OR: [UpdateWhereInput!]
+  NOT: [UpdateWhereInput!]
+}
+
+input UpdateWhereUniqueInput {
+  id: ID
 }
 
 type User {
@@ -65,6 +248,7 @@ type User {
   surname: String!
   password: String!
   role: Role!
+  updates(where: UpdateWhereInput, orderBy: UpdateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Update!]
 }
 
 type UserConnection {
@@ -74,6 +258,20 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  username: ID
+  firstname: String!
+  surname: String!
+  password: String!
+  role: Role
+  updates: UpdateCreateManyWithoutUserInput
+}
+
+input UserCreateOneWithoutUpdatesInput {
+  create: UserCreateWithoutUpdatesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutUpdatesInput {
   username: ID
   firstname: String!
   surname: String!
@@ -133,6 +331,7 @@ input UserUpdateInput {
   surname: String
   password: String
   role: Role
+  updates: UpdateUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -140,6 +339,25 @@ input UserUpdateManyMutationInput {
   surname: String
   password: String
   role: Role
+}
+
+input UserUpdateOneRequiredWithoutUpdatesInput {
+  create: UserCreateWithoutUpdatesInput
+  update: UserUpdateWithoutUpdatesDataInput
+  upsert: UserUpsertWithoutUpdatesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutUpdatesDataInput {
+  firstname: String
+  surname: String
+  password: String
+  role: Role
+}
+
+input UserUpsertWithoutUpdatesInput {
+  update: UserUpdateWithoutUpdatesDataInput!
+  create: UserCreateWithoutUpdatesInput!
 }
 
 input UserWhereInput {
@@ -211,6 +429,9 @@ input UserWhereInput {
   role_not: Role
   role_in: [Role!]
   role_not_in: [Role!]
+  updates_every: UpdateWhereInput
+  updates_some: UpdateWhereInput
+  updates_none: UpdateWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

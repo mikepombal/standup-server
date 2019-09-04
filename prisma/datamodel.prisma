@@ -5,6 +5,13 @@ type User {
     surname: String!
     password: String!
     role: Role! @default(value: NONE)
+    updates: [Update!]! @relation(onDelete: CASCADE)
+}
+
+type Update {
+    id: ID! @id
+    user: User!
+    date: DateTime!
 }
 
 enum Role {

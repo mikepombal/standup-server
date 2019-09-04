@@ -1,6 +1,7 @@
 type Query {
     info: String!
     listUsers: [User!]!
+    getLastUpdate: [LastUpdate!]!
 }
 
 type Mutation {
@@ -12,6 +13,12 @@ type User {
     firstname: String!
     surname: String!
     role: Role!
+}
+
+type LastUpdate {
+    username: ID!
+    firstname: String!
+    lastUpdate: String
 }
 
 enum Role {
