@@ -1,6 +1,38 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { MutationResolvers } from '../generated/graphqlgen';
+import { Context } from '../types';
+
+const isUserAndUpdateValid = async (ctx: Context, username: string, date: string) => {
+    const user = await ctx.db.user({ username });
+    if (!user) {
+        throw new Error(`No such ${username} user found`);
+    }
+    const update = await ctx.db.user({ username }).updates({ where: { date } });
+    if (update.length) {
+        throw new Error(`${username} already has an update on ${date}`);
+    }
+    return true;
+};
+
+const addUpdate = (username: string, date: string) => {
+    const alias = `alias_${Math.random()
+        .toString(36)
+        .slice(2)}`;
+
+    return `
+      ${alias}: createUpdate(data: {
+        user: {
+          connect: {
+            username: "${username}"
+          }
+        }
+        date: "${date}"
+      }) {
+        id
+      }
+    `;
+};
 
 export const Mutation: MutationResolvers.Type = {
     login: async (parent, args, ctx) => {
@@ -23,5 +55,15 @@ export const Mutation: MutationResolvers.Type = {
             token,
             user,
         };
+    },
+    addUpdates: async (parent, args, ctx) => {
+        // first check if users exist and if a update date was already added to
+        await Promise.all(args.usrnames.map(username => isUserAndUpdateValid(ctx, username, args.date)));
+
+        const mutations = args.usrnames.map(name => addUpdate(name, args.date));
+        const joinedMutations = mutations.join('\n');
+        const result = await ctx.db.$graphql(`mutation addUpdates { ${joinedMutations} }`);
+
+        return `Success adding update for [${args.usrnames}] on ${args.date}`;
     },
 };

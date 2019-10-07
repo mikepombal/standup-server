@@ -6,6 +6,7 @@ type Query {
 
 type Mutation {
     login(usrname: String!, password: String!): AuthPayload
+    addUpdates(date: String!, usrnames: [String!]!): String!
 }
 
 type User {

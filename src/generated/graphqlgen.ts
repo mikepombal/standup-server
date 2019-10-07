@@ -260,6 +260,11 @@ export namespace MutationResolvers {
         password: string;
     }
 
+    export interface ArgsAddUpdates {
+        date: string;
+        usrnames: string[];
+    }
+
     export type LoginResolver =
         | ((
               parent: undefined,
@@ -275,6 +280,23 @@ export namespace MutationResolvers {
                   ctx: Context,
                   info: GraphQLResolveInfo
               ) => AuthPayload | null | Promise<AuthPayload | null>;
+          };
+
+    export type AddUpdatesResolver =
+        | ((
+              parent: undefined,
+              args: ArgsAddUpdates,
+              ctx: Context,
+              info: GraphQLResolveInfo
+          ) => string | Promise<string>)
+        | {
+              fragment: string;
+              resolve: (
+                  parent: undefined,
+                  args: ArgsAddUpdates,
+                  ctx: Context,
+                  info: GraphQLResolveInfo
+              ) => string | Promise<string>;
           };
 
     export interface Type {
@@ -293,6 +315,23 @@ export namespace MutationResolvers {
                       ctx: Context,
                       info: GraphQLResolveInfo
                   ) => AuthPayload | null | Promise<AuthPayload | null>;
+              };
+
+        addUpdates:
+            | ((
+                  parent: undefined,
+                  args: ArgsAddUpdates,
+                  ctx: Context,
+                  info: GraphQLResolveInfo
+              ) => string | Promise<string>)
+            | {
+                  fragment: string;
+                  resolve: (
+                      parent: undefined,
+                      args: ArgsAddUpdates,
+                      ctx: Context,
+                      info: GraphQLResolveInfo
+                  ) => string | Promise<string>;
               };
     }
 }

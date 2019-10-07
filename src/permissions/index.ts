@@ -13,4 +13,7 @@ export const permissions = shield({
         listUsers: rules.isAuthenticatedUser,
         getLastUpdate: rules.isAuthenticatedUser,
     },
+    Mutation: {
+        addUpdates: rules.isAuthenticatedUser,
+    }
 });
