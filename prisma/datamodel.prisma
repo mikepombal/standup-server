@@ -5,6 +5,7 @@ type User {
     surname: String!
     password: String!
     role: Role! @default(value: NONE)
+    status: Status! @default(value: ACTIVE)
     updates: [Update!]! @relation(onDelete: CASCADE)
 }
 
@@ -19,4 +20,9 @@ enum Role {
     ADMIN
     BASIC
     NONE
+}
+
+enum Status {
+    ACTIVE
+    IDLE
 }
