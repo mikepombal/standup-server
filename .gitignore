@@ -9,3 +9,6 @@
 
 # production
 /build
+
+# vscode workspace
+standup-server.code-workspace
