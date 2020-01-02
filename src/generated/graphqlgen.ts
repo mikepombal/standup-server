@@ -49,6 +49,18 @@ export namespace QueryResolvers {
               ) => LastUpdate[] | Promise<LastUpdate[]>;
           };
 
+    export type GithubLoginUrlResolver =
+        | ((parent: undefined, args: {}, ctx: Context, info: GraphQLResolveInfo) => string | Promise<string>)
+        | {
+              fragment: string;
+              resolve: (
+                  parent: undefined,
+                  args: {},
+                  ctx: Context,
+                  info: GraphQLResolveInfo
+              ) => string | Promise<string>;
+          };
+
     export interface Type {
         info:
             | ((parent: undefined, args: {}, ctx: Context, info: GraphQLResolveInfo) => string | Promise<string>)
@@ -89,6 +101,18 @@ export namespace QueryResolvers {
                       ctx: Context,
                       info: GraphQLResolveInfo
                   ) => LastUpdate[] | Promise<LastUpdate[]>;
+              };
+
+        githubLoginUrl:
+            | ((parent: undefined, args: {}, ctx: Context, info: GraphQLResolveInfo) => string | Promise<string>)
+            | {
+                  fragment: string;
+                  resolve: (
+                      parent: undefined,
+                      args: {},
+                      ctx: Context,
+                      info: GraphQLResolveInfo
+                  ) => string | Promise<string>;
               };
     }
 }

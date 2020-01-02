@@ -35,4 +35,6 @@ export const Query: QueryResolvers.Type = {
             )
             .sort((a, b) => ((a.lastUpdate || '0') < (b.lastUpdate || '0') ? -1 : 1));
     },
+    githubLoginUrl: () =>
+        `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_OAUTH_CLIENT_ID}&scope=user`,
 };
