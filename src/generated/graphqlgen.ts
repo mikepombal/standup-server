@@ -284,6 +284,10 @@ export namespace MutationResolvers {
         password: string;
     }
 
+    export interface ArgsAuthorizeWithGithub {
+        code: string;
+    }
+
     export interface ArgsAddUpdates {
         date: string;
         usrnames: string[];
@@ -304,6 +308,23 @@ export namespace MutationResolvers {
                   ctx: Context,
                   info: GraphQLResolveInfo
               ) => AuthPayload | null | Promise<AuthPayload | null>;
+          };
+
+    export type AuthorizeWithGithubResolver =
+        | ((
+              parent: undefined,
+              args: ArgsAuthorizeWithGithub,
+              ctx: Context,
+              info: GraphQLResolveInfo
+          ) => AuthPayload | Promise<AuthPayload>)
+        | {
+              fragment: string;
+              resolve: (
+                  parent: undefined,
+                  args: ArgsAuthorizeWithGithub,
+                  ctx: Context,
+                  info: GraphQLResolveInfo
+              ) => AuthPayload | Promise<AuthPayload>;
           };
 
     export type AddUpdatesResolver =
@@ -339,6 +360,23 @@ export namespace MutationResolvers {
                       ctx: Context,
                       info: GraphQLResolveInfo
                   ) => AuthPayload | null | Promise<AuthPayload | null>;
+              };
+
+        authorizeWithGithub:
+            | ((
+                  parent: undefined,
+                  args: ArgsAuthorizeWithGithub,
+                  ctx: Context,
+                  info: GraphQLResolveInfo
+              ) => AuthPayload | Promise<AuthPayload>)
+            | {
+                  fragment: string;
+                  resolve: (
+                      parent: undefined,
+                      args: ArgsAuthorizeWithGithub,
+                      ctx: Context,
+                      info: GraphQLResolveInfo
+                  ) => AuthPayload | Promise<AuthPayload>;
               };
 
         addUpdates:

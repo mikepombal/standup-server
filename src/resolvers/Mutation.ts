@@ -3,6 +3,35 @@ import * as jwt from 'jsonwebtoken';
 import { MutationResolvers } from '../generated/graphqlgen';
 import { Context } from '../types';
 
+type Credential = {
+    client_id: string;
+    client_secret: string;
+    code: string;
+};
+
+const requestGithubToken = (credentials: Credential) =>
+    fetch('https://github.com/login/oauth/access_token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+        },
+        body: JSON.stringify(credentials),
+    })
+        .then(res => res.json())
+        .catch(error => {
+            throw new Error(JSON.stringify(error));
+        });
+
+const requestGithubUserAccount = (token: string) =>
+    fetch(`https://api.github.com/user?access_token=${token}`).then(res => res.json());
+
+const requestGithubUser = async (credentials: Credential) => {
+    const { access_token } = await requestGithubToken(credentials);
+    const githubUser = await requestGithubUserAccount(access_token);
+    return { login: githubUser.login, access_token };
+};
+
 const isUserAndUpdateValid = async (ctx: Context, username: string, date: string) => {
     const user = await ctx.db.user({ username });
     if (!user) {
@@ -53,6 +82,23 @@ export const Mutation: MutationResolvers.Type = {
         //const hashedPassword = await bcrypt.hash('test1234', 10);
         return {
             token,
+            user,
+        };
+    },
+    authorizeWithGithub: async (parent, { code }, ctx) => {
+        // 1. Obtain data from GitHub about user
+        const githubUser = await requestGithubUser({
+            client_id: process.env.GITHUB_OAUTH_CLIENT_ID || '',
+            client_secret: process.env.GITHUB_OAUTH_CLIENT_SECRET || '',
+            code,
+        });
+        // 2. check user is registered
+        const user = await ctx.db.user({ username: githubUser.login });
+        if (!user) {
+            throw new Error('No such user found');
+        }
+        return {
+            token: 'test',
             user,
         };
     },
