@@ -252,6 +252,7 @@ type User {
   firstname: String!
   surname: String!
   password: String!
+  token: String
   role: Role!
   status: Status!
   updates(where: UpdateWhereInput, orderBy: UpdateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Update!]
@@ -268,6 +269,7 @@ input UserCreateInput {
   firstname: String!
   surname: String!
   password: String!
+  token: String
   role: Role
   status: Status
   updates: UpdateCreateManyWithoutUserInput
@@ -283,6 +285,7 @@ input UserCreateWithoutUpdatesInput {
   firstname: String!
   surname: String!
   password: String!
+  token: String
   role: Role
   status: Status
 }
@@ -303,6 +306,8 @@ enum UserOrderByInput {
   surname_DESC
   password_ASC
   password_DESC
+  token_ASC
+  token_DESC
   role_ASC
   role_DESC
   status_ASC
@@ -315,6 +320,7 @@ type UserPreviousValues {
   firstname: String!
   surname: String!
   password: String!
+  token: String
   role: Role!
   status: Status!
 }
@@ -341,6 +347,7 @@ input UserUpdateInput {
   firstname: String
   surname: String
   password: String
+  token: String
   role: Role
   status: Status
   updates: UpdateUpdateManyWithoutUserInput
@@ -350,6 +357,7 @@ input UserUpdateManyMutationInput {
   firstname: String
   surname: String
   password: String
+  token: String
   role: Role
   status: Status
 }
@@ -365,6 +373,7 @@ input UserUpdateWithoutUpdatesDataInput {
   firstname: String
   surname: String
   password: String
+  token: String
   role: Role
   status: Status
 }
@@ -439,6 +448,20 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
+  token: String
+  token_not: String
+  token_in: [String!]
+  token_not_in: [String!]
+  token_lt: String
+  token_lte: String
+  token_gt: String
+  token_gte: String
+  token_contains: String
+  token_not_contains: String
+  token_starts_with: String
+  token_not_starts_with: String
+  token_ends_with: String
+  token_not_ends_with: String
   role: Role
   role_not: Role
   role_in: [Role!]

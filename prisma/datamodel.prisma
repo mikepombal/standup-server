@@ -4,6 +4,7 @@ type User {
     firstname: String!
     surname: String!
     password: String!
+    token: String
     role: Role! @default(value: NONE)
     status: Status! @default(value: ACTIVE)
     updates: [Update!]! @relation(onDelete: CASCADE)

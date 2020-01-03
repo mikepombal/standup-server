@@ -161,6 +161,8 @@ export type UserOrderByInput =
   | "surname_DESC"
   | "password_ASC"
   | "password_DESC"
+  | "token_ASC"
+  | "token_DESC"
   | "role_ASC"
   | "role_DESC"
   | "status_ASC"
@@ -266,6 +268,20 @@ export interface UserWhereInput {
   password_not_starts_with?: Maybe<String>;
   password_ends_with?: Maybe<String>;
   password_not_ends_with?: Maybe<String>;
+  token?: Maybe<String>;
+  token_not?: Maybe<String>;
+  token_in?: Maybe<String[] | String>;
+  token_not_in?: Maybe<String[] | String>;
+  token_lt?: Maybe<String>;
+  token_lte?: Maybe<String>;
+  token_gt?: Maybe<String>;
+  token_gte?: Maybe<String>;
+  token_contains?: Maybe<String>;
+  token_not_contains?: Maybe<String>;
+  token_starts_with?: Maybe<String>;
+  token_not_starts_with?: Maybe<String>;
+  token_ends_with?: Maybe<String>;
+  token_not_ends_with?: Maybe<String>;
   role?: Maybe<Role>;
   role_not?: Maybe<Role>;
   role_in?: Maybe<Role[] | Role>;
@@ -302,6 +318,7 @@ export interface UserCreateWithoutUpdatesInput {
   firstname: String;
   surname: String;
   password: String;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
 }
@@ -322,6 +339,7 @@ export interface UserUpdateWithoutUpdatesDataInput {
   firstname?: Maybe<String>;
   surname?: Maybe<String>;
   password?: Maybe<String>;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
 }
@@ -340,6 +358,7 @@ export interface UserCreateInput {
   firstname: String;
   surname: String;
   password: String;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
   updates?: Maybe<UpdateCreateManyWithoutUserInput>;
@@ -359,6 +378,7 @@ export interface UserUpdateInput {
   firstname?: Maybe<String>;
   surname?: Maybe<String>;
   password?: Maybe<String>;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
   updates?: Maybe<UpdateUpdateManyWithoutUserInput>;
@@ -441,6 +461,7 @@ export interface UserUpdateManyMutationInput {
   firstname?: Maybe<String>;
   surname?: Maybe<String>;
   password?: Maybe<String>;
+  token?: Maybe<String>;
   role?: Maybe<Role>;
   status?: Maybe<Status>;
 }
@@ -504,6 +525,7 @@ export interface User {
   firstname: String;
   surname: String;
   password: String;
+  token?: String;
   role: Role;
   status: Status;
 }
@@ -514,6 +536,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
   password: () => Promise<String>;
+  token: () => Promise<String>;
   role: () => Promise<Role>;
   status: () => Promise<Status>;
   updates: <T = FragmentableArray<Update>>(args?: {
@@ -535,6 +558,7 @@ export interface UserSubscription
   firstname: () => Promise<AsyncIterator<String>>;
   surname: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  token: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<Role>>;
   status: () => Promise<AsyncIterator<Status>>;
   updates: <T = Promise<AsyncIterator<UpdateSubscription>>>(args?: {
@@ -556,6 +580,7 @@ export interface UserNullablePromise
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
   password: () => Promise<String>;
+  token: () => Promise<String>;
   role: () => Promise<Role>;
   status: () => Promise<Status>;
   updates: <T = FragmentableArray<Update>>(args?: {
@@ -791,6 +816,7 @@ export interface UserPreviousValues {
   firstname: String;
   surname: String;
   password: String;
+  token?: String;
   role: Role;
   status: Status;
 }
@@ -803,6 +829,7 @@ export interface UserPreviousValuesPromise
   firstname: () => Promise<String>;
   surname: () => Promise<String>;
   password: () => Promise<String>;
+  token: () => Promise<String>;
   role: () => Promise<Role>;
   status: () => Promise<Status>;
 }
@@ -815,6 +842,7 @@ export interface UserPreviousValuesSubscription
   firstname: () => Promise<AsyncIterator<String>>;
   surname: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  token: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<Role>>;
   status: () => Promise<AsyncIterator<Status>>;
 }

@@ -97,8 +97,10 @@ export const Mutation: MutationResolvers.Type = {
         if (!user) {
             throw new Error('No such user found');
         }
+        // 3. save the token in the database
+        await ctx.db.updateUser({ data: { token: githubUser.access_token }, where: { username: githubUser.login } });
         return {
-            token: 'test',
+            token: githubUser.access_token,
             user,
         };
     },
