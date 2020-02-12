@@ -1,10 +1,10 @@
 import { rule, shield } from 'graphql-shield';
-import { getUsername } from '../utils';
+import { getAuthenticatedUser } from '../utils';
 
 const rules = {
-    isAuthenticatedUser: rule()((parent, args, context) => {
-        const username = getUsername(context);
-        return Boolean(username);
+    isAuthenticatedUser: rule()(async (parent, args, context) => {
+        const user = await getAuthenticatedUser(context);
+        return Boolean(user);
     }),
 };
 
@@ -15,5 +15,5 @@ export const permissions = shield({
     },
     Mutation: {
         addUpdates: rules.isAuthenticatedUser,
-    }
+    },
 });
