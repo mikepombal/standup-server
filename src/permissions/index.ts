@@ -3,7 +3,10 @@ import { getAuthenticatedUser } from '../utils';
 
 const rules = {
     isAuthenticatedUser: rule()(async (parent, args, context) => {
-        const user = await getAuthenticatedUser(context);
+        const { user, error } = await getAuthenticatedUser(context);
+        if (error) {
+            return error;
+        }
         return Boolean(user);
     }),
 };

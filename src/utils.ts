@@ -11,9 +11,13 @@ export async function getAuthenticatedUser(ctx: Context) {
     if (Authorization && Username) {
         const token = Authorization.replace('Bearer ', '');
         const user = await ctx.db.user({ username: Username });
-        if (user && user.token === token) {
-            return user;
+        if (!user) {
+            return { error: new Error('User not valid') };
         }
+        if (user.token !== token) {
+            return { error: new Error('Token not valid') };
+        }
+        return { user };
     }
-    return null;
+    return {};
 }
