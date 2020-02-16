@@ -1,19 +1,28 @@
 import { rule, shield } from 'graphql-shield';
-import { getUsername } from '../utils';
+import { getAuthenticatedUser } from '../utils';
 
-const rules = {
-    isAuthenticatedUser: rule()((parent, args, context) => {
-        const username = getUsername(context);
-        return Boolean(username);
-    }),
-};
+const isAuthenticatedUser = rule()(async (parent, args, context) => {
+    const { user, error } = await getAuthenticatedUser(context);
+    if (error) {
+        return error;
+    }
+    return Boolean(user);
+});
+
+const isAdmin = rule()(async (parent, args, context) => {
+    const { user, error } = await getAuthenticatedUser(context);
+    if (error) {
+        return error;
+    }
+    return Boolean(user && (user.role === 'ADMIN' || user.role === 'SUPERADMIN'));
+});
 
 export const permissions = shield({
     Query: {
-        listUsers: rules.isAuthenticatedUser,
-        getLastUpdate: rules.isAuthenticatedUser,
+        listUsers: isAuthenticatedUser,
+        getLastUpdate: isAuthenticatedUser,
     },
     Mutation: {
-        addUpdates: rules.isAuthenticatedUser,
-    }
+        addUpdates: isAdmin,
+    },
 });

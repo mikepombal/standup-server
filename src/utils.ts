@@ -5,15 +5,19 @@ interface Token {
     username: string;
 }
 
-export function getUsername(context: Context) {
-    const Authorization = context.request.get('Authorization');
-    if (!process.env.APP_SERVER_SECRET) {
-        throw new Error('Missing APP_SERVER_SECRET');
-    }
-    if (Authorization) {
+export async function getAuthenticatedUser(ctx: Context) {
+    const Authorization = ctx.request.get('Authorization');
+    const Username = ctx.request.get('Username');
+    if (Authorization && Username) {
         const token = Authorization.replace('Bearer ', '');
-        const verifiedToken = verify(token, process.env.APP_SERVER_SECRET) as Token;
-        return verifiedToken && verifiedToken.username;
+        const user = await ctx.db.user({ username: Username });
+        if (!user) {
+            return { error: new Error('User not valid') };
+        }
+        if (user.token !== token) {
+            return { error: new Error('Token not valid') };
+        }
+        return { user };
     }
-    return null;
+    return {};
 }
